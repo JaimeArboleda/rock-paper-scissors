@@ -66,6 +66,12 @@ function playGameConsole(numRounds) {
 
 function updateScore() {
     score.textContent = `${numWins} - ${numLoses}`;
+    if (numWins === 5) {
+        score.textContent = `Congratulations. You won the game!!`;
+    }
+    if (numLoses === 5) {
+        score.textContent = `You lost the game!!`;
+    }
 }
 
 function playRound(element) {
