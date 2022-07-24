@@ -8,7 +8,7 @@ function getComputerChoice() {
     return choices[index]
 }
 
-function playRound(playerSelection, computerSelection) {
+function playRoundConsole(playerSelection, computerSelection) {
     const loseMsg = 'YOU LOST!!'
     const winMsg = 'YOU WON!!'
     const tieMsg = "IT'S A TIE!!"
@@ -51,7 +51,7 @@ function countElements(collection) {
     return counter
 }
 
-function playGame(numRounds) {
+function playGameConsole(numRounds) {
     let results = []
     for (let i = 0; i < numRounds; i++){
         let computerSelection = getComputerChoice()
@@ -63,3 +63,74 @@ function playGame(numRounds) {
     console.log(results)
     console.log(countElements(results))
 }
+
+function updateScore() {
+    score.textContent = `${numWins} - ${numLoses}`;
+}
+
+function playRound(element) {
+    if (state === "notPlaying") {
+        return;
+    }
+    state = "notPlaying";
+    const computerSelection = getComputerChoice();
+    const playerSelection = element.target.id;
+    const loseMsg = 'YOU LOST!!';
+    const winMsg = 'YOU WON!!';
+    const tieMsg = "IT'S A TIE!!";
+    playAgainButton.removeAttribute("hidden");
+    if (playerSelection.toLowerCase() === 'rock'){
+        if (computerSelection.toLowerCase() === 'paper') {
+            divResult.textContent = loseMsg;
+            numLoses++;
+        } else if (computerSelection.toLowerCase() === 'scissors') {
+            divResult.textContent = winMsg;
+            numWins++;
+        } else {
+            divResult.textContent = tieMsg;
+        }
+    } else if (playerSelection.toLowerCase() === 'paper'){
+        if (computerSelection.toLowerCase() === 'paper') {
+            divResult.textContent = tieMsg;
+        } else if (computerSelection.toLowerCase() === 'scissors') {
+            divResult.textContent = loseMsg;
+            numLoses++;
+        } else {
+            divResult.textContent = winMsg;
+            numWins++;
+        }
+    } else {
+        if (computerSelection.toLowerCase() === 'paper') {
+            divResult.textContent = loseMsg;
+            numLoses++;
+        } else if (computerSelection.toLowerCase() === 'scissors') {
+            divResult.textContent = tieMsg;
+        } else {
+            divResult.textContent = winMsg;
+            numWins++;
+        }
+    }
+    updateScore();
+}
+
+function playAgain(element) {
+    state = "playing";
+    playAgainButton.setAttribute("hidden", "hidden");
+}
+
+let numWins = 0;
+let numLoses = 0;
+let state = "playing";
+
+
+imgPlays = Array.from(document.querySelectorAll(".options img"))
+imgPlays.forEach(element => {
+    element.addEventListener("click", playRound);
+});
+const divResult = document.querySelector(".result");
+const playAgainButton = document.querySelector(".play-again button");
+playAgainButton.addEventListener("click", playAgain);
+const score = document.querySelector(".score");
+updateScore();
+
+console.log(imgPlays)
